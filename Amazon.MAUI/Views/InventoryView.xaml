@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Amazon.MAUI.Views.InventoryView"
+             Title="Inventory"
+             NavigatedTo="ContentPage_NavigatedTo"
+             NavigatedFrom="ContentPage_NavigatedFrom">
+    <VerticalStackLayout
+        Padding="30,0"
+        Spacing="25">
+        <ListView
+            ItemsSource="{Binding Items}"
+            SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"
+                                   Text="{Binding Id}"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold"/>
+                            <Label Grid.Column="2"
+                                   Text="{Binding Description}"/>
+                            <Label Grid.Column="3"
+                                   Text="{Binding Price}"/>
+                            <Label Grid.Column="4"
+                                   Text="{Binding Quantity}"/>
+                            <Button Grid.Column="5"
+                                    Text="Edit"
+                                    Command="{Binding Path=EditCommand}"
+                                    CommandParameter="{Binding}"/>
+                            <Button Grid.Column="6"
+                                    Text="Delete"
+                                    Command="{Binding Path=DeleteCommand}"
+                                    CommandParameter="{Binding}"
+                                    Clicked="InlineDelete_Clicked"></Button>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label
+            Text="Welcome to the Inventory!"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
+
+
+        <Button
+            x:Name="CreateBtn"
+            Text="Create an Item"
+            Clicked="CreateClicked"
+            HorizontalOptions="Fill"/>
+
+        <Button
+            x:Name="BackBtn"
+            Text="Back"
+            Clicked="BackClicked"
+            HorizontalOptions="Fill"/>
+    </VerticalStackLayout>
+</ContentPage>

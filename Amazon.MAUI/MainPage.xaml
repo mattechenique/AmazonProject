@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Amazon.MAUI.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+
+            <Label
+                Text="Menu"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"/>
+
+            <Button
+                x:Name="InventoryBtn"
+                Text="Inventory"
+                Clicked="InventoryClicked"
+                HorizontalOptions="Fill"/>
+
+            <Button
+                x:Name="ShoppingBtn"
+                Text="Shopping"
+                Clicked="ShoppingClicked"
+                HorizontalOptions="Fill"/>
+
+            <Button
+                x:Name="ExitBtn"
+                Text="Exit"
+                Clicked="ExitClicked"
+                HorizontalOptions="Fill"/>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

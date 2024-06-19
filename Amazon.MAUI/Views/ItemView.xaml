@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Amazon.MAUI.Views.ItemView"
+             Title="ItemView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout
+        Padding="30,0"
+        Spacing="25">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Text="Name"/>
+            <Entry Grid.Row="0"
+                   Grid.Column="1"
+                   Text="{Binding Name}"/>
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Text="Description"/>
+            <Entry Grid.Row="1"
+                   Grid.Column="1"
+                   Text="{Binding Description}"/>
+            <Label Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Price"/>
+            <Entry Grid.Row="2"
+                   Grid.Column="1"
+                   Text="{Binding Price}"/>
+            <Label Grid.Row="3"
+                   Grid.Column="0"
+                   Text="Quantity"/>
+            <Entry Grid.Row="3"
+                   Grid.Column="1"
+                   Text="{Binding Quantity}"/>
+        </Grid>
+        <Button Text="Ok"
+                Clicked="OkClicked"/>
+        <Button Text="Cancel"
+                Clicked="CancelClicked"/>
+    </VerticalStackLayout>
+</ContentPage>
