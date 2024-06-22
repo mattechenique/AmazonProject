@@ -28,4 +28,19 @@
         ContentTemplate="{DataTemplate views:ItemView}"
         Route="ItemView"/>
 
+    <ShellContent
+        Title="Add an Item to Cart"
+        ContentTemplate="{DataTemplate views:CartView}"
+        Route="CartView"/>
+
+    <ShellContent
+        Title="Remove an Item from Cart"
+        ContentTemplate="{DataTemplate views:RemoveCartView}"
+        Route="RemoveCartView"/>
+
+    <ShellContent
+        Title="Checkout an Item from Cart"
+        ContentTemplate="{DataTemplate views:CheckoutView}"
+        Route="CheckoutView"/>
+
 </Shell>

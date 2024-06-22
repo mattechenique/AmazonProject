@@ -52,5 +52,9 @@ namespace Amazon.MAUI.ViewModels
             ItemServiceProxy.Current.Delete(SelectedItem.Item.Id);
             RefreshItems();
         }
+        public void AddToCart(int itemId, int itemQuantity)
+        {
+            ItemServiceProxy.Current.AddToCart(itemId, itemQuantity);
+        }
     }
 }

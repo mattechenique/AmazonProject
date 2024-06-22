@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Amazon.MAUI.Views.ShoppingView"
-             Title="Shop"
+             x:Class="Amazon.MAUI.Views.CartView"
+             Title="CartView"
              NavigatedTo="ContentPage_NavigatedTo"
              NavigatedFrom="ContentPage_NavigatedFrom">
-    <VerticalStackLayout
+<VerticalStackLayout
         Padding="30,0"
         Spacing="25">
         <ListView
-            ItemsSource="{Binding CartItems}"
-            SelectedItem="{Binding SelectedCartItem}"> 
+            ItemsSource="{Binding Items}"
+            SelectedItem="{Binding SelectedItem}">  
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -40,33 +40,34 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label
-            Text="Welcome to the Shop!"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <Button
-            x:Name="AddItemBtn"
-            Text="Add Item to Cart"
-            Clicked="AddItemClicked"
-            HorizontalOptions="Fill"/>
-
-        <Button
-            x:Name="RemoveItemBtn"
-            Text="Remove Item From Cart"
-            Clicked="RemoveItemClicked"
-            HorizontalOptions="Fill"/>
-
-        <Button
-            x:Name="CheckoutBtn"
-            Text="Checkout"
-            Clicked="CheckoutClicked"
-            HorizontalOptions="Fill"/>
-
-        <Button
-            x:Name="BackBtn"
-            Text="Back"
-            Clicked="BackClicked"
-            HorizontalOptions="Fill"/>
+            <Label Grid.Row="0"
+           Grid.Column="0"
+           Text="Id"/>
+            <Entry x:Name="ItemIdEntry"
+           Grid.Row="0"
+           Grid.Column="1"
+           Keyboard="Numeric"/>
+            <Label Grid.Row="1"
+           Grid.Column="0"
+           Text="Quantity"/>
+            <Entry x:Name="ItemQuantityEntry"
+           Grid.Row="1"
+           Grid.Column="1"
+           Keyboard="Numeric"/>
+        </Grid>
+        <Button Text="Ok"
+                Clicked="OkClicked"/>
+        <Button Text="Cancel"
+                Clicked="CancelClicked"/>
     </VerticalStackLayout>
 </ContentPage>

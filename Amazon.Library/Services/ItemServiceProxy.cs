@@ -150,11 +150,14 @@ namespace Amazon.Library.Services
         public string Checkout()
         {
             decimal subtotal = 0m;
+            var receiptItems = new List<string>();
             foreach (var item in cart)
             {
-                if (decimal.TryParse(item.Price, out decimal price))
+                string priceString = item.Price.Replace("$", "").Trim();
+                if (decimal.TryParse(priceString, out decimal price))
                 {
                     subtotal += price * item.Quantity;
+                    receiptItems.Add($"{item.Name} - {item.Quantity} @ {item.Price} each");
                 }
             }
 
@@ -162,12 +165,11 @@ namespace Amazon.Library.Services
             decimal total = subtotal + tax;
 
             var receipt = "Your Receipt:\n";
-            receipt += string.Join("\n", cart.Select(i => $"{i.Name} - {i.Quantity} @ {i.Price} each"));
+            receipt += string.Join("\n", receiptItems);
             receipt += $"\n\nSubtotal: {subtotal:C2}";
             receipt += $"\nTax (7%): {tax:C2}";
             receipt += $"\nTotal: {total:C2}";
 
-            cart.Clear();
             return receipt;
         }
     }

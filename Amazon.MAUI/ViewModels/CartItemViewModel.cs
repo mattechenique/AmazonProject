@@ -5,15 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Item = Amazon.Library.Models.Item;
+using CartItem = Amazon.Library.Models.Item;
 
 namespace Amazon.MAUI.ViewModels
 {
-    public class ItemViewModel
+    public class CartItemViewModel
     {
-        public ICommand? EditCommand { get; private set; }
-        public ICommand? DeleteCommand { get; private set; }
-        public Item? Item;
+        public CartItem? Item;
         public string? Name
         {
             get
@@ -77,54 +75,25 @@ namespace Amazon.MAUI.ViewModels
                 return Item.Id;
             }
         }
-        public void ExecuteEdit(ItemViewModel? e)
-        {
-            if (e?.Item == null)
-            {
-                return;
-            }
-            Shell.Current.GoToAsync($"//ItemView?itemId={e.Item.Id}");
-        }
-        private void ExecuteDelete(int? id)
-        {
-            if (id == null)
-            {
-                return;
-            }
-            ItemServiceProxy.Current.Delete(id ?? 0);
-        }
-        public void Add()
-        {
-            ItemServiceProxy.Current.AddOrUpdate(Item);
-        }
-        public void AddToCart(int id, int quantity)
+        public void Add(int id, int quantity)
         {
             ItemServiceProxy.Current.AddToCart(id, quantity);
         }
-        public void SetupCommands()
+        public CartItemViewModel()
         {
-            EditCommand = new Command(
-                (e) => ExecuteEdit(e as ItemViewModel));
-            DeleteCommand = new Command(
-                (e) => ExecuteDelete((e as ItemViewModel)?.Item?.Id));
+            Item = new CartItem();
         }
-        public ItemViewModel()
+        public CartItemViewModel(int id)
         {
-            Item = new Item();
-            SetupCommands();
-        }
-        public ItemViewModel(int id)
-        {
-            Item = ItemServiceProxy.Current?.Items?.FirstOrDefault(c => c.Id == id);
+            Item = ItemServiceProxy.Current?.CartItems?.FirstOrDefault(c => c.Id == id);
             if (Item == null)
             {
-                Item = new Item();
+                Item = new CartItem();
             }
         }
-        public ItemViewModel(Item e)
+        public CartItemViewModel(CartItem e)
         {
             Item = e;
-            SetupCommands();
         }
         public string? Display
         {
@@ -135,3 +104,4 @@ namespace Amazon.MAUI.ViewModels
         }
     }
 }
+
