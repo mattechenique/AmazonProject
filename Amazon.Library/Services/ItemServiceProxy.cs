@@ -166,20 +166,22 @@ namespace Amazon.Library.Services
             if (cart == null) return "Cart not found.";
 
             decimal subtotal = 0m;
+            decimal markdown = 0m;
             var markdownReceipt = "";
             var receiptItems = new List<string>();
             Dictionary<int, int> itemCounts = new Dictionary<int, int>();
             foreach (var item in cart.Items)
             {
                 string priceString = item.Price.Replace("$", "").Trim();
+                markdown = item.MarkDown;
                 if (decimal.TryParse(priceString, out decimal price))
                 {
                     if (item.MarkDown > 0)
                     {
-                        markdownReceipt = $"\nMarkDown Amount:{item.MarkDown}\nNew Clearance Price: {price - item.MarkDown}\n";
+                        markdownReceipt = $"\nMarkDown Amount:{markdown}\nNew Clearance Price: {price - markdown}\n";
                     }
-                    subtotal += (price - item.MarkDown) * item.Quantity;
-                    receiptItems.Add($"{item.Name} - {item.Quantity} @ ${price - item.MarkDown} each");
+                    subtotal += (price - markdown) * item.Quantity;
+                    receiptItems.Add($"{item.Name} - {item.Quantity} @ ${price - markdown} each");
 
                     if (item.IsBogo)
                     {
@@ -202,7 +204,7 @@ namespace Amazon.Library.Services
                     string priceString = product.Price.Replace("$", "").Trim();
                     if (decimal.TryParse(priceString, out decimal price))
                     {
-                        bogoDiscount += price * freeItems;
+                        bogoDiscount += (price -  markdown) * freeItems;
                     }
                 }
             }
@@ -229,15 +231,6 @@ namespace Amazon.Library.Services
             var newCart = new Cart(newCartId);
             carts.Add(newCart);
             return newCart;
-        }
-
-        public void DeleteCart(int cartId)
-        {
-            var cartToDelete = carts.FirstOrDefault(c => c.CartId == cartId);
-            if (cartToDelete != null)
-            {
-                carts.Remove(cartToDelete);
-            }
         }
         public Cart? GetCartById(int cartId)
         {
