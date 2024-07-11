@@ -1,14 +1,15 @@
+using Amazon.Library.Models;
 using Amazon.MAUI.ViewModels;
 namespace Amazon.MAUI.Views;
-
+[QueryProperty(nameof(CartId), "cartId")]
 public partial class RemoveCartView : ContentPage
 {
-	public RemoveCartView()
+    public int CartId { get; set; }
+    public RemoveCartView()
 	{
 		InitializeComponent();
-        BindingContext = new CartViewModel();
 	}
-    private void OkClicked(object sender, EventArgs e)
+    private async void OkClicked(object sender, EventArgs e)
     {
         string idText = ItemIdEntry.Text;
         string quantityText = ItemQuantityEntry.Text;
@@ -16,15 +17,16 @@ public partial class RemoveCartView : ContentPage
         bool idConversion = int.TryParse(idText, out id);
         bool quantityConversion = int.TryParse(quantityText, out quantity);
         (BindingContext as CartViewModel).RemoveFromCart(id, quantity);
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
-    private void CancelClicked(object sender, EventArgs e)
+    private async void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
+        BindingContext = new CartViewModel(CartId);
         (BindingContext as CartViewModel).RefreshItems();
     }
     private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)
