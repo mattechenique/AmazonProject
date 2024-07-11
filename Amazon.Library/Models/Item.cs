@@ -13,6 +13,8 @@ namespace Amazon.Library.Models
         public string? Description;
         public string? Price { get; set; }
         public int Quantity { get; set; }
+        public bool IsBogo { get; set; }
+        public decimal MarkDown { get; set; }
 
         public override string ToString()
         {

@@ -32,6 +32,11 @@
         Title="Add an Item to Cart"
         ContentTemplate="{DataTemplate views:CartView}"
         Route="CartView"/>
+    
+    <ShellContent
+        Title="Change MarkDown"
+        ContentTemplate="{DataTemplate views:CartItemView}"
+        Route="CartItemView"/>
 
     <ShellContent
         Title="Remove an Item from Cart"
@@ -42,5 +47,15 @@
         Title="Checkout an Item from Cart"
         ContentTemplate="{DataTemplate views:CheckoutView}"
         Route="CheckoutView"/>
+    
+    <ShellContent
+        Title="Specify Tax Rate"
+        ContentTemplate="{DataTemplate views:ConfigurationView}"
+        Route="ConfigurationView"/>
+
+    <ShellContent
+        Title="Specify Tax Rate"
+        ContentTemplate="{DataTemplate views:CartListView}"
+        Route="CartListView"/>
 
 </Shell>

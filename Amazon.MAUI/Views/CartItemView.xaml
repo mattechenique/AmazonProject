@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Amazon.MAUI.Views.CartItemView"
+             Title="CartItemView"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout
+    Padding="30,0"
+    Spacing="25">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+               Grid.Column="0"
+               Text="MarkDown"/>
+            <Entry Grid.Row="0"
+               Grid.Column="1"
+               Text="{Binding MarkDown}"/>
+        </Grid>
+        <Button Text="Ok"
+            Clicked="OkClicked"/>
+        <Button Text="Cancel"
+            Clicked="CancelClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

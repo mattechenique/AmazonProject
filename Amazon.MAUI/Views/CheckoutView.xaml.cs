@@ -9,7 +9,11 @@ public partial class CheckoutView : ContentPage
 		InitializeComponent();
         BindingContext = new CartViewModel();
     }
-
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as CartViewModel)?.Checkout();
+    }
     private void BackClicked(object sender, EventArgs e)
     {
         Shell.Current.GoToAsync("//Shop");

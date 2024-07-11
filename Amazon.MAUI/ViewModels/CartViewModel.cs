@@ -9,59 +9,107 @@ using Amazon.Library.Services;
 using Amazon.Library.Models;
 using System.ComponentModel;
 using System.Windows.Input;
+// AuthenticationServices;
 
 namespace Amazon.MAUI.ViewModels
 {
     public class CartViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public List<CartItemViewModel> CartItems
+
+        private int _currentCartId;
+        public int CurrentCartId
         {
-            get
-            {
-                return ItemServiceProxy.Current?.CartItems?.Select(c => new CartItemViewModel(c)).ToList()
-                    ?? new List<CartItemViewModel>();
-            }
-        }
-        private string _receipt;
-        public string Receipt
-        {
-            get { return Checkout(); }
+            get => _currentCartId;
             set
             {
-                if (_receipt != value)
+                if (_currentCartId != value)
                 {
-                    _receipt = value;
-                    OnPropertyChanged(nameof(Receipt));
+                    _currentCartId = value;
+                    RefreshItems();
+                    NotifyPropertyChanged();
                 }
             }
         }
 
-        public string Reciept { get; set; }
-        protected virtual void OnPropertyChanged(string propertyName)
+        public List<CartItemViewModel> CartItems
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get
+            {
+                return ItemServiceProxy.Current?.Carts?.FirstOrDefault(c => c.CartId == CurrentCartId)?.Items
+                    ?.Select(i => new CartItemViewModel(CurrentCartId, i)).ToList()
+                    ?? new List<CartItemViewModel>();
+            }
         }
-        public CartViewModel()
-        {
 
-        }
         public void RefreshItems()
         {
-            NotifyPropertyChanged("CartItems");
+            NotifyPropertyChanged(nameof(CartItems));
         }
+
+        public CartViewModel(Cart cart)
+        {
+            _currentCartId = cart.CartId;
+        }
+
+        public CartViewModel(int currentCartId)
+        {
+            CurrentCartId = currentCartId;
+        }
+
+        public CartViewModel() { }
+
         public CartItemViewModel SelectedCartItem { get; set; }
+
+        private string _receipt;
+        public string Receipt
+        {
+            get => _receipt;
+            set
+            {
+                _receipt = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private decimal _taxRate;
+        public decimal TaxRate
+        {
+            get => _taxRate;
+            set
+            {
+                _taxRate = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public void ChangeTax(decimal newTaxRate)
+        {
+            TaxRate = newTaxRate == 0 ? 0.07m : newTaxRate;
+        }
+
         public void RemoveFromCart(int itemId, int itemQuantity)
         {
-            ItemServiceProxy.Current.RemoveFromCart(itemId, itemQuantity);
+            ItemServiceProxy.Current.RemoveFromCart(CurrentCartId, itemId, itemQuantity);
         }
+
         public string Checkout()
         {
-             return ItemServiceProxy.Current.Checkout();
+            RefreshItems();
+            Receipt = ItemServiceProxy.Current.Checkout(CurrentCartId, TaxRate);
+            return Receipt;
+        }
+
+        public void ChangeBogo()
+        {
+            if (SelectedCartItem?.CartItem == null) return;
+            Shell.Current.GoToAsync($"//CartItemView?itemId={SelectedCartItem.CartItem.Id}");
+            ItemServiceProxy.Current.ChangeBogo(CurrentCartId, SelectedCartItem.Id);
         }
     }
 }
+

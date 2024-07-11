@@ -3,9 +3,10 @@ using Amazon.Library.Services;
 using Amazon.Library.Models;
 
 namespace Amazon.MAUI.Views;
-
+[QueryProperty(nameof(CartItemId), "cartitemId")]
 public partial class CartView : ContentPage
 {
+    public int CartItemId { get; set; }
     public CartView()
 	{
 		InitializeComponent();
@@ -19,7 +20,7 @@ public partial class CartView : ContentPage
         int id, quantity;
         bool idConversion = int.TryParse(idText, out id);
         bool quantityConversion = int.TryParse(quantityText, out quantity);
-        (BindingContext as InventoryViewModel).AddToCart(id, quantity);
+        (BindingContext as InventoryViewModel).AddToCart(CartItemId, id, quantity);
         Shell.Current.GoToAsync("//Shop");
     }
     private void CancelClicked(object sender, EventArgs e)
