@@ -1,25 +1,30 @@
 using Amazon.MAUI.ViewModels;
 
 namespace Amazon.MAUI.Views;
-
+[QueryProperty(nameof(CartId), "cartId")]
 public partial class ConfigurationView : ContentPage
 {
-	public ConfigurationView()
+    public int CartId { get; set; }
+    public ConfigurationView()
 	{
 		InitializeComponent();
-        BindingContext = new CartViewModel();
     }
-    private void OkClicked(object sender, EventArgs e)
+    private async void OkClicked(object sender, EventArgs e)
     {
         if (decimal.TryParse(TaxRateEntry.Text, out decimal newTaxRate))
         {
             (BindingContext as CartViewModel)?.ChangeTax(newTaxRate / 100m);
         }
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
 
-    private void CancelClicked(object sender, EventArgs e)
+    private async void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
+    }
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        BindingContext = new CartViewModel(CartId);
+        (BindingContext as CartViewModel).RefreshItems();
     }
 }

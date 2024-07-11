@@ -8,16 +8,6 @@ namespace Amazon.MAUI.Views
         public CartListView()
         {
             InitializeComponent();
-            BindingContext = new CartListViewModel();
-        }
-
-        private void OpenCartClicked(object sender, EventArgs e)
-        {
-            var cartId = (sender as Button)?.CommandParameter as int?;
-            if (cartId.HasValue)
-            {
-                Shell.Current.GoToAsync($"//Shop?cartId={cartId}");
-            }
         }
 
         private void AddNewCartClicked(object sender, EventArgs e)

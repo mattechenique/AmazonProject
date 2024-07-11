@@ -3,33 +3,32 @@ using Amazon.Library.Services;
 using Amazon.Library.Models;
 
 namespace Amazon.MAUI.Views;
-[QueryProperty(nameof(CartItemId), "cartitemId")]
+[QueryProperty(nameof(CartId), "cartId")]
 public partial class CartView : ContentPage
 {
-    public int CartItemId { get; set; }
+    public int CartId { get; set; }
     public CartView()
 	{
 		InitializeComponent();
-        BindingContext = new InventoryViewModel();
-
     }
-    private void OkClicked(object sender, EventArgs e)
+    private async void OkClicked(object sender, EventArgs e)
     {
         string idText = ItemIdEntry.Text;
         string quantityText = ItemQuantityEntry.Text;
         int id, quantity;
         bool idConversion = int.TryParse(idText, out id);
         bool quantityConversion = int.TryParse(quantityText, out quantity);
-        (BindingContext as InventoryViewModel).AddToCart(CartItemId, id, quantity);
-        Shell.Current.GoToAsync("//Shop");
+        (BindingContext as InventoryViewModel).AddToCart(id, quantity);
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
-    private void CancelClicked(object sender, EventArgs e)
+    private async void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
+        BindingContext = new InventoryViewModel(CartId);
         (BindingContext as InventoryViewModel).RefreshItems();
     }
     private void ContentPage_NavigatedFrom(object sender, NavigatedFromEventArgs e)

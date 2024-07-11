@@ -3,27 +3,27 @@ using Amazon.MAUI.ViewModels;
 
 namespace Amazon.MAUI.Views;
 [QueryProperty(nameof(ItemId), "itemId")]
-[QueryProperty(nameof(CartItemId), "cartitemId")]
+[QueryProperty(nameof(CartId), "cartId")]
 public partial class CartItemView : ContentPage
 {
     public int ItemId { get; set; }
-    public int CartItemId { get; set; }
+    public int CartId { get; set; }
     public CartItemView()
 	{
 		InitializeComponent();
 	}
-    private void OkClicked(object sender, EventArgs e)
+    private async void OkClicked(object sender, EventArgs e)
     {
         (BindingContext as CartItemViewModel).ChangeMarkdown();
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
 
-    private void CancelClicked(object sender, EventArgs e)
+    private async void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//Shop");
+        await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
-        BindingContext = new CartItemViewModel(CartItemId, ItemId);
+        BindingContext = new CartItemViewModel(CartId, ItemId);
     }
 }
