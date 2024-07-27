@@ -149,6 +149,12 @@ namespace Amazon.Library.Services
             }
         }
 
+        public void ChangeTax(int cartId, decimal newTaxRate)
+        {
+            var cart = carts.FirstOrDefault(c => c.CartId == cartId);
+            cart.TaxRate = newTaxRate;
+        }
+
         public void ChangeMarkDown(int cartId, int itemId, decimal markdown)
         {
             var cart = carts.FirstOrDefault(c => c.CartId == cartId);
@@ -160,7 +166,7 @@ namespace Amazon.Library.Services
             }
         }
 
-        public string Checkout(int cartId, decimal taxRate)
+        public string Checkout(int cartId)
         {
             var cart = carts.FirstOrDefault(c => c.CartId == cartId);
             if (cart == null) return "Cart not found.";
@@ -208,7 +214,7 @@ namespace Amazon.Library.Services
                     }
                 }
             }
-            decimal tax = subtotal * taxRate;
+            decimal tax = subtotal * cart.TaxRate;
             decimal total = (subtotal + tax) - bogoDiscount;
 
             var receipt = "Your Receipt:\n";
@@ -220,7 +226,7 @@ namespace Amazon.Library.Services
             {
                 receipt += $"\nBogo Discount: {bogoDiscount:C2}";
             }
-            receipt += $"\nTax %{taxRate * 100}: {tax:C2}";
+            receipt += $"\nTax %{cart.TaxRate * 100}: {tax:C2}";
             receipt += $"\nTotal: {total:C2}";
 
             return receipt;

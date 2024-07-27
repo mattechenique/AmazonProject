@@ -15,6 +15,7 @@ namespace Amazon.Library.Models
         public int Quantity { get; set; }
         public bool IsBogo { get; set; }
         public decimal MarkDown { get; set; }
+        public decimal TaxRate { get; set; }
 
         public override string ToString()
         {

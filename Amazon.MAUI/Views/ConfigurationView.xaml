@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Amazon.MAUI.Views.ConfigurationView"
-             Title="Configuration Page">
+             Title="Configuration Page"
+             NavigatedTo="ContentPage_NavigatedTo">
     <VerticalStackLayout
         Padding="30,0"
         Spacing="25">
@@ -19,7 +20,7 @@
                Text="Tax Rate"/>
             <Entry Grid.Row="0"
                Grid.Column="1"
-               x:Name="TaxRateEntry" Text="{Binding taxRate}"/>
+               x:Name="TaxRateEntry" Text="{Binding TaxRate}"/>
             </Grid>
             <Button Text="Ok"
                     Clicked="OkClicked"/>

@@ -9,6 +9,7 @@ namespace Amazon.Library.Models
     public class Cart
     {
         public int CartId { get; set; }
+        public decimal TaxRate { get; set; }
         public List<Item> Items { get; set; } = new List<Item>();
 
         public Cart(int cartId)

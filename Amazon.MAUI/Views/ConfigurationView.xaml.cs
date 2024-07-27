@@ -11,10 +11,10 @@ public partial class ConfigurationView : ContentPage
     }
     private async void OkClicked(object sender, EventArgs e)
     {
-        if (decimal.TryParse(TaxRateEntry.Text, out decimal newTaxRate))
-        {
-            (BindingContext as CartViewModel)?.ChangeTax(newTaxRate / 100m);
-        }
+        string newTaxRate = TaxRateEntry.Text;
+        decimal taxRate;
+        bool taxRateConversion = decimal.TryParse(newTaxRate, out taxRate);
+        (BindingContext as CartViewModel)?.ChangeTax(taxRate / 100m);
         await Shell.Current.GoToAsync($"//Shop?cartId={CartId}");
     }
 

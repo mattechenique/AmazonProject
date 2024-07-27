@@ -87,9 +87,9 @@ namespace Amazon.MAUI.ViewModels
             }
         }
 
-        public void ChangeTax(decimal newTaxRate)
+        public void ChangeTax(decimal taxRate)
         {
-            TaxRate = newTaxRate == 0 ? 0.07m : newTaxRate;
+            ItemServiceProxy.Current.ChangeTax(CurrentCartId, taxRate);
         }
 
         public void RemoveFromCart(int itemId, int itemQuantity)
@@ -100,7 +100,7 @@ namespace Amazon.MAUI.ViewModels
         public string Checkout()
         {
             RefreshItems();
-            Receipt = ItemServiceProxy.Current.Checkout(CurrentCartId, TaxRate);
+            Receipt = ItemServiceProxy.Current.Checkout(CurrentCartId);
             return Receipt;
         }
 
