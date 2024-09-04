@@ -29,12 +29,12 @@ This project is a comprehensive remake of Amazon, built using .NET MAUI. It incl
 ## Getting Started
 
 ### Prerequisites
-- .NET 6 or later
+- .NET 8 or later
 - .NET MAUI workload installed
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/amazon-maui-remake.git
+   git clone https://github.com/mattechenique/AmazonProject.git
 ****
