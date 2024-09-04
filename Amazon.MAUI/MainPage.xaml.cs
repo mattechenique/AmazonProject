@@ -17,7 +17,7 @@ namespace Amazon.MAUI
 
         private void ShoppingClicked(object sender, EventArgs e)
         {
-            Shell.Current.GoToAsync("//Shop");
+            Shell.Current.GoToAsync("//CartListView");
 
         }
 

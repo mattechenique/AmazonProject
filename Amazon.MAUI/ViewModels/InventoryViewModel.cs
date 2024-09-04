@@ -17,6 +17,19 @@ namespace Amazon.MAUI.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        private int _currentCartId;
+        public int CurrentCartId
+        {
+            get => _currentCartId;
+            set
+            {
+                if (_currentCartId != value)
+                {
+                    _currentCartId = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         public List<ItemViewModel> Items
         {
             get
@@ -28,6 +41,10 @@ namespace Amazon.MAUI.ViewModels
         public InventoryViewModel()
         {
 
+        }
+        public InventoryViewModel(int currentCartId)
+        {
+            CurrentCartId = currentCartId;
         }
         public void RefreshItems()
         {
@@ -54,7 +71,7 @@ namespace Amazon.MAUI.ViewModels
         }
         public void AddToCart(int itemId, int itemQuantity)
         {
-            ItemServiceProxy.Current.AddToCart(itemId, itemQuantity);
+            ItemServiceProxy.Current.AddToCart(CurrentCartId, itemId, itemQuantity);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Amazon.MAUI.ViewModels
         public ICommand? EditCommand { get; private set; }
         public ICommand? DeleteCommand { get; private set; }
         public Item? Item;
+        public int CartId { get; set; }
         public string? Name
         {
             get
@@ -76,6 +77,13 @@ namespace Amazon.MAUI.ViewModels
             {
                 return Item.Id;
             }
+            set
+            {
+                if (Item != null)
+                {
+                    Item.Id = value;
+                }
+            }
         }
         public void ExecuteEdit(ItemViewModel? e)
         {
@@ -99,7 +107,7 @@ namespace Amazon.MAUI.ViewModels
         }
         public void AddToCart(int id, int quantity)
         {
-            ItemServiceProxy.Current.AddToCart(id, quantity);
+            ItemServiceProxy.Current.AddToCart(CartId, id, quantity);
         }
         public void SetupCommands()
         {
@@ -113,16 +121,23 @@ namespace Amazon.MAUI.ViewModels
             Item = new Item();
             SetupCommands();
         }
-        public ItemViewModel(int id)
+        public ItemViewModel(Item e)
         {
+            Item = e;
+            SetupCommands();
+        }
+        public ItemViewModel(int id, int cartId)
+        {
+            CartId = cartId;
             Item = ItemServiceProxy.Current?.Items?.FirstOrDefault(c => c.Id == id);
             if (Item == null)
             {
                 Item = new Item();
             }
         }
-        public ItemViewModel(Item e)
+        public ItemViewModel(Item e, int cartId)
         {
+            CartId = cartId;
             Item = e;
             SetupCommands();
         }

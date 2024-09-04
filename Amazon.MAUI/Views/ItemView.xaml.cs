@@ -1,10 +1,12 @@
 using Amazon.MAUI.ViewModels;
 namespace Amazon.MAUI.Views;
 [QueryProperty(nameof(ItemId), "itemId")]
+[QueryProperty(nameof(CartItemId), "cartitemId")]
 
 public partial class ItemView : ContentPage
 {
     public int ItemId { get; set; }
+    public int CartItemId { get; set; }
     public ItemView()
     {
         InitializeComponent();
@@ -21,7 +23,7 @@ public partial class ItemView : ContentPage
     }
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
-        BindingContext = new ItemViewModel(ItemId);
+        BindingContext = new ItemViewModel(ItemId, CartItemId);
     }
 
 }

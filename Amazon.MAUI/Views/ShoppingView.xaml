@@ -23,6 +23,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0"
                            Text="{Binding Id}"/>
@@ -30,11 +31,22 @@
                            Text="{Binding Name}"
                            FontAttributes="Bold"/>
                             <Label Grid.Column="2"
-                           Text="{Binding Description}"/>
-                            <Label Grid.Column="3"
                            Text="{Binding Price}"/>
-                            <Label Grid.Column="4"
+                            <Label Grid.Column="3"
                            Text="{Binding Quantity}"/>
+                            <Label Grid.Column="4"
+                           Text="{Binding IsBogo}"/>
+                            <Label Grid.Column="5"
+                            Text="{Binding MarkDown}"/>
+                            <Button Grid.Column="6"
+                                Text="Change BOGO"
+                                Command="{Binding Path=ChangeBogoCommand}"
+                                CommandParameter="{Binding}"
+                                Clicked="InlineChangeBogo_Clicked"></Button>
+                            <Button Grid.Column="7"
+                             Text="Change MarkDown"
+                             Command="{Binding Path=ChangeMarkdownCommand}"
+                             CommandParameter="{Binding}"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
@@ -57,6 +69,12 @@
             Clicked="RemoveItemClicked"
             HorizontalOptions="Fill"/>
 
+        <Button
+            x:Name="ConfigurationBtn"
+            Text="Specify Tax Rate"
+            Clicked="ConfigurationClicked"
+            HorizontalOptions="Fill"/>
+        
         <Button
             x:Name="CheckoutBtn"
             Text="Checkout"

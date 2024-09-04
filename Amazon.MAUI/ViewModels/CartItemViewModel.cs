@@ -1,4 +1,5 @@
-﻿using Amazon.Library.Services;
+﻿using Amazon.Library.Models;
+using Amazon.Library.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,18 +12,21 @@ namespace Amazon.MAUI.ViewModels
 {
     public class CartItemViewModel
     {
-        public CartItem? Item;
+        public ICommand? ChangeBogoCommand { get; private set; }
+        public ICommand? ChangeMarkdownCommand { get; private set; }
+        public CartItem? CartItem;
+        public int CartId { get;  set; }
         public string? Name
         {
             get
             {
-                return Item.Name ?? string.Empty;
+                return CartItem.Name ?? string.Empty;
             }
             set
             {
-                if (Item != null)
+                if (CartItem != null)
                 {
-                    Item.Name = value;
+                    CartItem.Name = value;
                 }
             }
         }
@@ -30,13 +34,13 @@ namespace Amazon.MAUI.ViewModels
         {
             get
             {
-                return Item.Description ?? string.Empty;
+                return CartItem.Description ?? string.Empty;
             }
             set
             {
-                if (Item != null)
+                if (CartItem != null)
                 {
-                    Item.Description = value;
+                    CartItem.Description = value;
                 }
             }
         }
@@ -44,13 +48,13 @@ namespace Amazon.MAUI.ViewModels
         {
             get
             {
-                return Item.Price ?? string.Empty;
+                return CartItem.Price ?? string.Empty;
             }
             set
             {
-                if (Item != null)
+                if (CartItem != null)
                 {
-                    Item.Price = value;
+                    CartItem.Price = value;
                 }
             }
         }
@@ -58,13 +62,13 @@ namespace Amazon.MAUI.ViewModels
         {
             get
             {
-                return Item.Quantity;
+                return CartItem.Quantity;
             }
             set
             {
-                if (Item != null)
+                if (CartItem != null)
                 {
-                    Item.Quantity = value;
+                    CartItem.Quantity = value;
                 }
             }
         }
@@ -72,28 +76,86 @@ namespace Amazon.MAUI.ViewModels
         {
             get
             {
-                return Item.Id;
+                return CartItem.Id;
             }
+        }
+        public bool IsBogo
+        {
+            get
+            {
+                return CartItem.IsBogo;
+            }
+            set
+            {
+                if (CartItem != null)
+                {
+                    CartItem.IsBogo = value;
+                }
+            }
+        }
+        public decimal MarkDown
+        {
+            get
+            {
+                return CartItem.MarkDown;
+            }
+            set
+            {
+                if (CartItem != null)
+                {
+                    CartItem.MarkDown = value;
+                }
+            }
+        }
+        public void ExecuteChangeBogo(int? cartId, int? itemId)
+        {
+            if (cartId == null || itemId == null)
+            {
+                return;
+            }
+            ItemServiceProxy.Current.ChangeBogo(cartId.Value, itemId.Value);
+        }
+        public void ExecuteChangeMarkdown(CartItemViewModel? e)
+        {
+            if (e?.CartItem == null)
+            {
+                return;
+            }
+            Shell.Current.GoToAsync($"//CartItemView?cartId={Id}&itemId={e.CartItem.Id}");
+        }
+        public void ChangeMarkdown()
+        {
+            ItemServiceProxy.Current.ChangeMarkDown(CartId, CartItem.Id, CartItem.MarkDown);
+        }
+        public void SetupCommands()
+        {
+            ChangeBogoCommand = new Command(
+                (e) => ExecuteChangeBogo(CartId, (e as CartItemViewModel)?.CartItem?.Id)); ;
+            ChangeMarkdownCommand = new Command(
+                (e) => ExecuteChangeMarkdown(e as CartItemViewModel));
         }
         public void Add(int id, int quantity)
         {
-            ItemServiceProxy.Current.AddToCart(id, quantity);
+            ItemServiceProxy.Current.AddToCart(CartId, id, quantity);
         }
         public CartItemViewModel()
         {
-            Item = new CartItem();
+            CartItem = new CartItem();
+            SetupCommands();
         }
-        public CartItemViewModel(int id)
+        public CartItemViewModel(int cartId, int id)
         {
-            Item = ItemServiceProxy.Current?.CartItems?.FirstOrDefault(c => c.Id == id);
-            if (Item == null)
+            CartItem = ItemServiceProxy.Current?.Carts?.FirstOrDefault(c => c.CartId == cartId)?.Items?.FirstOrDefault(i => i.Id == id);
+            if (CartItem == null)
             {
-                Item = new CartItem();
+                CartItem = new CartItem();
             }
         }
-        public CartItemViewModel(CartItem e)
+        public CartItemViewModel(int cartId,CartItem e)
         {
-            Item = e;
+            CartId = cartId;   
+            CartItem = e;
+            SetupCommands();
         }
         public string? Display
         {
